@@ -1,7 +1,7 @@
 FROM debian:stretch-slim 
 
 # Defining default Java and Maven version 
-ARG JAVA_VERSION="openjdk:11"
+ARG JAVA_VERSION="11-jdk-slim"
 ARG MAVEN_VERSION="3.6.3"
 
 # Defining default non-root user UID, GID, and name 
