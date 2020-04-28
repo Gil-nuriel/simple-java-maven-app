@@ -5,8 +5,9 @@ pipeline {
         stage('Run Tests'){
             parallel{
                 stage('test on jdk-8') {
-                    agent {docker {image 'maven:3.6.3-jdk-11'}}
+                    agent {docker {image 'maven:3.6.3-jdk-8'}}
                     steps {
+                        sh 'mvn -version'
                         sh 'mvn clean package'
                         sh 'mvn test'
                     }
@@ -16,11 +17,14 @@ pipeline {
                         }
                     }
                 }
-                stage('test on jdk-11') {
-                    agent {label 'slave_2'}
+                stage('test on jdk-8 (slave)') {
+                    agent {docker {
+                        image 'maven:3.6.3-jdk-8'
+                        label 'slave_2'
+                        }}                    
                     steps {
                         checkout scm
-                        sh 'echo mvn -version'
+                        sh 'mvn -version'
                         sh 'mvn clean package'
                         sh 'mvn test'
                     }
