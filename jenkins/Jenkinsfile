@@ -1,24 +1,15 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-        }
-    }
+    agent none
+    options {skipDefaultCheckout()}
     stages {
-
-        stage('check version'){
-            steps{
-            sh "mvn -version"
-            sh "java -version"
-            }
-        }
-
         stage('Build') {
+            agent {docker {image 'maven:3.6.3-jdk-8'}}
             steps {
                 sh 'mvn clean package'
             }
         }
         stage('Test') {
+            agent {docker {image 'maven:3.6.3-jdk-8'}}
             steps {
                 sh 'mvn test'
             }
@@ -29,6 +20,7 @@ pipeline {
             }
         }
         stage('Deliver') {
+             agent {docker {image 'maven:3.6.3-jdk-8'}}
             steps {
                 sh './jenkins/scripts/deliver.sh'
             }
