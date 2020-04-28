@@ -5,6 +5,12 @@ pipeline {
         }
     }
     stages {
+
+        stage('check version'){
+            sh "echo mvn -version"
+            sh "echo java -version"
+        }
+
         stage('Build') {
             steps {
                 sh 'mvn clean package'
