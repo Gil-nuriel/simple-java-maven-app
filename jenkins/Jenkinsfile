@@ -2,27 +2,44 @@ pipeline {
     agent none
     options {skipDefaultCheckout()}
     stages {
-        stage('Build') {
-            agent {docker {image 'maven:3.6.3-jdk-8'}}
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-        stage('Test') {
-            agent {docker {image 'maven:3.6.3-jdk-8'}}
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+        stage('Run Tests'){
+            parallel{
+                stage('test on jdk-8') {
+                    agent {docker {image 'maven:3.6.3-jdk-8'}}
+                    steps {
+                        sh 'mvn clean package'
+                        sh 'mvn test'
+                    }
+                    post {
+                        always {
+                            junit 'target/surefire-reports/*.xml'
+                        }
+                    }
+                }
+                stage('test on jdk-11') {
+                    agent {label 'slave_2'}
+                    steps {
+                        sh 'mvn clean package'
+                        sh 'mvn test'
+                    }
+                    post {
+                        always {
+                            junit 'target/surefire-reports/*.xml'
+                        }
+                    }
                 }
             }
         }
         stage('Deliver') {
-             agent {docker {image 'maven:3.6.3-jdk-8'}}
-            steps {
-                sh './jenkins/scripts/deliver.sh'
+            parallel{
+                stage('deliver on 8'){
+                    agent {docker {image 'maven:3.6.3-jdk-8'}}
+                    steps{ sh './jenkins/scripts/deliver.sh'}
+                }
+                stage('deliver on 11'){
+                    agent {label 'slave_2'}
+                    steps{ sh './jenkins/scripts/deliver.sh'}
+                }
             }
         }
     }
