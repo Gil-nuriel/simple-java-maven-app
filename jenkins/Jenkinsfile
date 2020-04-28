@@ -5,7 +5,7 @@ pipeline {
         stage('Run Tests'){
             parallel{
                 stage('test on jdk-8') {
-                    agent {docker {image 'maven:3.6.3-jdk-8'}}
+                    agent {docker {image 'maven:3.6.3-jdk-11'}}
                     steps {
                         sh 'mvn clean package'
                         sh 'mvn test'
