@@ -8,8 +8,8 @@ pipeline {
 
         stage('check version'){
             steps{
-            sh "echo mvn -version"
-            sh "echo java -version"
+            sh "mvn -version"
+            sh "java -version"
             }
         }
 
