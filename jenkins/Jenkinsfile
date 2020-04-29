@@ -19,7 +19,7 @@ pipeline {
                 }
                 stage('test on jdk-11') {
                     agent {docker {
-                        image 'maven:3.6.3-openjdk-11'
+                        image 'maven:3.6.3-jdk-11-openj9'
                         label 'slave_2'
                         }}                    
                     steps {
@@ -45,7 +45,7 @@ pipeline {
                 stage('deliver on 11'){
                     agent {
                         docker {
-                            image 'maven:3.6.3-openjdk-11'
+                            image 'maven:3.6.3-jdk-11-openj9'
                             label 'slave_2' 
                         }     
                     }  
