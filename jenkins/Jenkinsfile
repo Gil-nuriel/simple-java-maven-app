@@ -42,8 +42,13 @@ pipeline {
                     agent {docker {image 'maven:3.6.3-jdk-8'}}
                     steps{ sh './jenkins/scripts/deliver.sh'}
                 }
-                stage('deliver on 11'){
-                    agent {label 'slave_2'}
+                stage('deliver on 8 (slave)'){
+                    agent {
+                        docker {
+                            image 'maven:3.6.3-jdk-8'
+                            label 'slave_2' 
+                        }     
+                    }  
                     steps{ sh './jenkins/scripts/deliver.sh'}
                 }
             }
