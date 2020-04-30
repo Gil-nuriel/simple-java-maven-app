@@ -2,6 +2,26 @@ pipeline {
     agent none
     options {skipDefaultCheckout()}
     stages {
+        stage ('update the project'){
+            parallel{
+                stage('pull to master'){
+                    agent {
+                        label 'master'
+                    }
+                    steps{
+                        sh 'git pull https://github.com/Gil-nuriel/simple-java-maven-app.git master'
+                    }
+                }
+                stage('pull to slave'){
+                    agent {
+                        label 'slave_2'
+                    }
+                    steps{
+                        sh 'git pull https://github.com/Gil-nuriel/simple-java-maven-app.git master'
+                    }
+                }
+            }
+        }
         stage('Run Tests'){
             parallel{
                 stage('test on jdk-8') {
