@@ -5,10 +5,15 @@ pipeline {
         stage('Run Tests'){
             parallel{
                 stage('test on jdk-8') {
-                    agent {docker {image 'maven:3.6.3-jdk-8'}}
+                    agent {
+                        docker {
+                            image 'maven:3.6.3-jdk-8'
+                            args '-v /root/.m2:/root/.m2'
+                        }
+                    }
                     steps {
                         sh 'mvn -version'
-                        sh 'mvn clean package'
+                        sh 'mvn -B -DskipTests clean package'
                         sh 'mvn test'
                     }
                     post {
@@ -21,11 +26,12 @@ pipeline {
                     agent {docker {
                         image 'maven:3.6.3-amazoncorretto-11'
                         label 'slave_2'
+                        args '-v /root/.m2:/root/.m2'
                         }}                    
                     steps {
                         checkout scm
                         sh 'mvn -version'
-                        sh 'mvn clean package'
+                        sh 'mvn -B -DskipTests clean package'
                         sh 'mvn test'
                     }
                     post {
@@ -39,7 +45,12 @@ pipeline {
         stage('Deliver') {
             parallel{
                 stage('deliver on 8'){
-                    agent {docker {image 'maven:3.6.3-jdk-8'}}
+                    agent {
+                        docker {
+                            image 'maven:3.6.3-jdk-8'
+                            args '-v /root/.m2:/root/.m2'
+                        }   
+                    }
                     steps{ sh './jenkins/scripts/deliver.sh'}
                 }
                 stage('deliver on 11'){
@@ -47,6 +58,7 @@ pipeline {
                         docker {
                             image 'maven:3.6.3-amazoncorretto-11'
                             label 'slave_2' 
+                            args '-v /root/.m2:/root/.m2'
                         }     
                     }  
                     steps{ sh './jenkins/scripts/deliver.sh'}
