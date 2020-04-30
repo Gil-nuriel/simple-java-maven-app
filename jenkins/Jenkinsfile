@@ -23,13 +23,14 @@ pipeline {
                     }
                 }
                 stage('test on jdk-11') {
-                    agent {docker {
-                        image 'maven:3.6.3-jdk-11'
-                        label 'slave_2'
-                        args '-v /root/.m2:/root/.m2'
-                        }}                    
+                    agent {
+                        docker {
+                            image 'maven:3.6.3-jdk-11'
+                            label 'slave_2'
+                            args '-v /root/.m2:/root/.m2'
+                        }
+                    }                    
                     steps {
-                        checkout scm
                         sh 'mvn -version'
                         sh 'mvn -B -DskipTests clean package'
                         sh 'mvn test'
