@@ -1,10 +1,10 @@
-FROM maven:latest
+FROM maven:3.6.3-jdk-8
 
 LABEL maintainer "gil11"
 
-RUN apt update
+RUN apt-get update
 
-RUN apt install -y maven 
+RUN apt-get install -y maven 
 
 COPY pox.xml /usr/local/src/pom.xml
 
