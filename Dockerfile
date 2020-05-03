@@ -2,9 +2,9 @@ FROM maven:latest
 
 LABEL maintainer "gil11"
 
-RUN apt-get update
+RUN apt update
 
-RUN apt-get install -y maven 
+RUN apt install -y maven 
 
 COPY pox.xml /usr/local/src/pom.xml
 
