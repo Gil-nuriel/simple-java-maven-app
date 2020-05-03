@@ -10,6 +10,8 @@ COPY pom.xml /usr/local/src/pom.xml
 
 COPY src /usr/local/src/src
 
+COPY target /usr/local/src/target
+
 WORKDIR /usr/local/src
 
 RUN mvn package
