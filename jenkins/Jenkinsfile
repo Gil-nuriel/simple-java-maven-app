@@ -36,7 +36,7 @@ pipeline {
             agent{label 'master'}
             steps{
                 script{
-                     docker.build registry + ':latest'
+                     dockerImage = docker.build registry + ':latest'
                 }
             }
         }
@@ -102,6 +102,17 @@ pipeline {
                         }     
                     }  
                     steps{ sh './jenkins/scripts/deliver.sh'}
+                }
+            }
+        }
+        //first argument is empty because default is dockerhub!
+        stage('Deploy'){
+            agent{label 'master'}
+            steps{
+                script{
+                     docker.withRegistery('',registryCredential){
+                         dockerImage.push()
+                     }
                 }
             }
         }
