@@ -6,8 +6,6 @@ pipeline {
     
     environment {
         registry = "gil11/simple-java-maven-app"
-        registryCredential = 'b976ec1c-27a2-4b69-8e9c-60f77f11eb6d'
-        dockerImage = ''
     }
 
     stages {
@@ -36,7 +34,7 @@ pipeline {
             agent{label 'master'}
             steps{
                 script{
-                     dockerImage = docker.build registry + ':latest'
+                     docker.build registry + ':latest'
                 }
             }
         }
@@ -102,17 +100,6 @@ pipeline {
                         }     
                     }  
                     steps{ sh './jenkins/scripts/deliver.sh'}
-                }
-            }
-        }
-        //first argument is empty because default is dockerhub!
-        stage('Deploy'){
-            agent{label 'master'}
-            steps{
-                script{
-                     docker.withRegistery('',registryCredential){
-                         dockerImage.push()
-                     }
                 }
             }
         }
