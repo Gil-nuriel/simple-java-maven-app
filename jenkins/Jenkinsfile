@@ -110,7 +110,7 @@ pipeline {
             agent{label 'master'}
             steps{
                 script{
-                     docker.withRegistery('',registryCredential){
+                     docker.withRegistry('',registryCredential){
                          dockerImage.push()
                      }
                 }
