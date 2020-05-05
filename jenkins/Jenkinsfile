@@ -18,7 +18,7 @@ pipeline {
                         label 'master'
                     }
                     steps{
-                        sh 'git pull https://github.com/Gil-nuriel/simple-java-maven-app.git master'
+                        git branch: 'master', url: 'https://github.com/Gil-nuriel/simple-java-maven-app.git' 
                     }
                 }
                 stage('pull to slave'){
@@ -26,8 +26,7 @@ pipeline {
                         label 'slave_2'
                     }
                     steps{
-                        sh 'git pull https://github.com/Gil-nuriel/simple-java-maven-app.git master'
-                    }
+                        git branch: 'master', url: 'https://github.com/Gil-nuriel/simple-java-maven-app.git'                    }
                 }
             }
         }
